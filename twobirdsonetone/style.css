@@ -1,0 +1,80 @@
+@import "https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
+
+body{
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background: url(city.jpg) no-repeat;
+    background-size: cover;
+}
+
+img {
+    padding-top: 20px;
+    padding-left: 20px;
+    image-rendering: auto;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+}
+
+h2 {
+    padding-left: 250px;
+    margin-top: -130px;
+    font-size: 50px;
+}
+
+.login-box{
+    width: 400px;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+}
+
+.login-box h1{
+    float: center;
+    color: black;
+    font-size: 40px;
+    border-bottom: 8px solid #4caf50;
+    margin-bottom: 20px;
+    padding 13px 0;
+}
+
+.textbox{
+    width: 100%;
+    overflow: hidden;
+    font-size: 30px;
+    padding: 8px 0;
+    margin: 8px 0;
+    border-bottom: 1px solid #4caf50;
+}
+
+.textbox i{
+    width: 26px;
+    float: left;
+    text-align: center;
+    color: black;
+    padding-left: 10px;
+}
+
+.textbox input{
+    border: none;
+    outline: none;
+    background: none;
+    padding-left: 10px;
+    font-size: 18px;
+    width: 80%;
+    float: left;
+    margin: 0 15px;
+}
+
+.btn{
+    width: 100%;
+    background: none;
+    border: 1px solid #4caf50;
+    color: rgb(0, 0, 0);
+    font-size: 18px;
+    padding: 5px;
+    cursor: pointer;
+    margin: 12px 0;
+}

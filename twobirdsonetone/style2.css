@@ -1,0 +1,39 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background: url(city.jpg) no-repeat;
+    background-size: cover;
+}
+
+img {
+    padding-top: 20px;
+    padding-left: 20px;
+    image-rendering: auto;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+}
+
+h2 {
+    padding-left: 250px;
+    margin-top: -130px;
+    font-size: 50px;
+}
+
+.login-box{
+    width: 350px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+}
+
+.login-box h1{
+    float: center;
+    color: black;
+    font-size: 40px;
+    border-bottom: 8px solid #4caf50;
+    margin-bottom: 14px;
+    padding 13px 0;
+}

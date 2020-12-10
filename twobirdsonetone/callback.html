@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        </script>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <meta charset="utf-8">
+        <title>Two Birds One Tone</title>
+        <link rel="stylesheet" href="style.css">
+        <img src="Logo.png" alt="logo" style="width:200px; height:200px;">
+        <h2>Two Birds One Tone</h2>
+    </head>
+    <body>
+        <div class="login-box">
+            <h1 id = 'text'>Success: Now Let User 2 Login</h1>
+
+                    <a id = 'auth_btn' class = "btn btn-success"  href = "https://accounts.spotify.com/authorize?client_id=9d1a8d9d58c947b086ed95d97a036980&show_dialog=true&redirect_uri=https://bwhitehurst.com/projects/twobirdsonetone/callback.html&scope=user-read-private%20user-read-email%20playlist-read-private%20user-library-read%20playlist-modify-public%20playlist-modify-private%20user-modify-playback-state%20user-top-read&response_type=token&state=123">Authenticate User 2</a>
+                    <div id = "buttons"></div>
+        </div>
+    </body>
+    <script>
+        //Gets access_token from callback URI
+        function getHashParams() {
+            let hashParams = {};
+            let e, r = /([^&;=]+)=?([^&;]*)/g,
+                q = window.location.hash.substring(1);
+            while ( e = r.exec(q)) {
+            hashParams[e[1]] = decodeURIComponent(e[2]);
+            }
+            return hashParams;
+        }
+        const params = getHashParams();
+        const access_token = params.access_token;
+        /*
+        function saveToken(accesstoken){
+                $.ajax({
+                    type: 'POST',
+                    url: "callback.php",
+                    data: 
+                    {
+                        token: accesstoken
+                    },
+                    success: function(data){
+                        console.log(data);
+                    },
+                    async:false
+                });
+           }
+           saveToken(access_token);
+
+
+           let row_cnt;
+           function checkDatabase(){
+            $.ajax({
+                    type: 'GET',
+                    url: "checkdb.php",
+                    success: function(data){
+                        row_cnt = data;
+                    },
+                    async:false
+                });
+           }
+           checkDatabase();
+           if(row_cnt === '2'){
+                let auth_btn = document.getElementById('auth_btn');
+                auth_btn.remove();
+                let btns = "<a class = 'btn btn-success' href = 'final.html'>Create Playlists</a>"
+                btns +="<a class = 'btn btn-success' href = 'webplayer.html'>Web Player</a>"; 
+                document.getElementById("buttons").innerHTML = btns;
+            }
+            */
+
+            if(localStorage.getItem('token1') === null){
+                localStorage.setItem('token1', access_token);
+                console.log('eval second');
+            }
+            else {
+                localStorage.setItem('token2', access_token);
+                let auth_btn = document.getElementById('auth_btn');
+                auth_btn.remove();
+                document.getElementById('text').innerHTML = "Success: Make a Selection"; 
+                let btns = "<a class = 'btn btn-success' href = 'final.html'>Create Playlists</a>"
+                document.getElementById("buttons").innerHTML = btns;
+            }
+    </script>
+    </html>

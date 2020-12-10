@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        </script>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <meta charset="utf-8">
+        <title>Two Birds One Tone</title>
+        <link rel="stylesheet" href="style.css">
+        <img src="Logo.png" alt="logo" style="width:200px; height:200px;">
+        <h2>Two Birds One Tone</h2>
+    </head>
+    <body>
+        <div class="login-box">
+            <h1>Success! Your merged playlist has been added to your spotify library.</h1>
+
+                    <a class = "btn btn-success"  href = "https://open.spotify.com/collection/playlists">Go to Spotify</a>
+        </div>
+    </body>
+    <script src = 'functions.js'></script>
+    <script>
+            /*
+            const tokens = retrieveTokens();
+            const token1 = tokens[0];
+            const token2 = tokens[1];
+            */
+            const token1 = localStorage.getItem('token1');
+            const token2 = localStorage.getItem('token2');
+            let usr1_songCount = getNumTracks(token1);
+            let usr2_songCount = getNumTracks(token2);
+
+            const usr1_library = getUserLibrary(token1);
+            let offset = 50;
+            while(usr1_songCount >= 50){
+                usr1_library.push(...getUserLibrary(token1, offset));
+                offset += 50;
+                usr1_songCount -= 50;
+            }
+
+            console.log(usr1_library.length);
+
+
+            const usr2_library = getUserLibrary(token2); 
+            offset = 50;
+            while(usr2_songCount >= 50){
+                usr2_library.push(...getUserLibrary(token2, offset));
+                offset += 50;
+                usr2_songCount -= 50;
+            }
+
+
+            let usr1_topSongCnt = getTotalTopTracks(token1);
+            let usr2_topSongCnt = getTotalTopTracks(token2);
+
+            let usr1_topTracks = getTopTracks(token1);
+            offset = 50;
+            while(usr1_topSongCnt >= 50){
+                usr1_topTracks.push(...getTopTracks(token1, offset));
+                offset += 50;
+                usr1_topSongCnt -= 50;
+            }
+
+            usr1_topTracks.forEach(track =>{
+                if(
+                    !usr1_library.find(uri =>{
+                    return (uri === track);
+                })
+                )usr1_library.push(track);
+            });
+
+            console.log(usr1_library.length);
+
+
+            let usr2_topTracks = getTopTracks(token2);
+            offset = 50;
+            while(usr2_topSongCnt >= 50){
+                usr2_topTracks.push(...getTopTracks(token2, offset));
+                offset += 50;
+                usr2_topSongCnt -= 50;
+            }
+
+            usr2_topTracks.forEach(track =>{
+                if(
+                    !usr2_library.find(uri =>{
+                    return (uri === track);
+                })
+                )usr2_library.push(track);
+            });
+
+            let usr1_id= getUserID(token1);
+            let usr2_id = getUserID(token2);
+
+            let playlists1 = getUserPlaylists(token1);
+            playlists1.forEach(playlist =>{
+                let length = getPlaylistLength(token1, playlist);
+                let tracks = getPlaylistTracks(token1, playlist);
+                offset = 100;
+                while(length >= 100){
+                    tracks.push(...getPlaylistTracks(token1, playlist, offset));
+                    offset += 100;
+                    length -= 100;
+                }
+                tracks.forEach(track =>{
+                    if(
+                            !usr1_library.find(song =>{
+                                if(song === track) return true;
+                                return false;
+                            })
+                        ) usr1_library.push(track);
+                });
+            });
+
+            let playlists2 = getUserPlaylists(token2);
+            playlists2.forEach(playlist =>{
+                 length = getPlaylistLength(token2, playlist);
+                 tracks = getPlaylistTracks(token2, playlist);
+                offset = 100;
+                while(length >= 100){
+                    tracks.push(...getPlaylistTracks(token2, playlist, offset));
+                    offset += 100;
+                    length -= 100;
+                }
+                tracks.forEach(track =>{
+                    if(
+                            !usr2_library.find(song =>{
+                                if(song === track) return true;
+                                return false;
+                            })
+                        ) usr2_library.push(track);
+                });
+            });
+
+            let matchingTracks = [];
+            for(let i = 0; i < usr1_library.length; i++){
+                for(let j = 0; j < usr2_library.length; j++){
+                    if(usr1_library[i] === usr2_library[j]){
+                        //checks to see if track was already added before adding    
+                        if(
+                            !matchingTracks.find(uri =>{
+                                if(uri === usr1_library[i]) return true;
+                                return false;
+                            })
+                        ) matchingTracks.push(usr1_library[i]);
+                    }
+                }
+            }       
+            
+
+            const usr1_PlaylistID = createPlaylist(usr1_id, token1);
+            const usr2_PlaylistID = createPlaylist(usr2_id, token2);
+
+            let truncTracks;
+            while(matchingTracks.length > 100){
+                truncTracks = matchingTracks.slice(0,100);
+                addTracks(usr1_PlaylistID, truncTracks, token1);
+                addTracks(usr2_PlaylistID, truncTracks, token2);
+
+                matchingTracks = matchingTracks.slice(100, matchingTracks.length);
+            }
+            if(matchingTracks.length > 0){
+                addTracks(usr1_PlaylistID, matchingTracks, token1);
+                addTracks(usr2_PlaylistID, matchingTracks, token2);
+            }
+            
+            
+            deleteTokens();
+        </script>
+</html>>

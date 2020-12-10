@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://sdk.scdn.co/spotify-player.js"></script>
+        <meta charset="utf-8">
+        <title>Two Birds One Tone</title>
+        <link rel="stylesheet" href="style.css">
+        <img src="Logo.png" alt="logo" style="width:200px; height:200px;">
+        <h2>Two Birds One Tone</h2>
+    </head>
+    <body>
+        <div class="login-box">
+            <h1>Your similar interests are now playing, enjoy!</h1>
+            <button class = 'btn btn-success' onclick="startPlayback(deviceID, matchingTracks, token1)">Start Playback</button>
+            <button class = 'btn btn-success' onclick="pausePlayback(deviceID)">Pause Playback</button>
+        </div>
+    </body>
+    <script src = 'functions.js'></script>
+    <script>
+        const token1 = localStorage.getItem('token1');
+        const token2 = localStorage.getItem('token2');
+        let deviceID;
+        window.onSpotifyWebPlaybackSDKReady = () => {
+          const token = token1;
+          const player = new Spotify.Player({
+            name: 'Two Birds One Tone',
+            getOAuthToken: cb => { cb(token); }
+          });
+          player.connect();
+          player.addListener('ready', ({ device_id }) => {
+            console.log(device_id);
+            deviceID= device_id;
+          });
+        };
+
+
+            usr1_songCount = getNumTracks(token1);
+            usr2_songCount = getNumTracks(token2);
+            const usr1_library = getUserLibrary(token1);
+            let offset = 50;
+            while(usr1_songCount >= 50){
+                usr1_library.push(...getUserLibrary(token1, offset));
+                offset += 50;
+                usr1_songCount -= 50;
+            }
+
+            const usr2_library = getUserLibrary(token2); 
+            offset = 50;
+            while(usr2_songCount >= 50){
+                usr2_library.push(...getUserLibrary(token2, offset));
+                offset += 50;
+                usr2_songCount -= 50;
+            }
+
+            let usr1_id= getUserID(token1);
+            
+            let matchingTracks = [];
+            for(let i = 0; i < usr1_library.length; i++){
+                for(let j = 0; j < usr2_library.length; j++){
+                    if(usr1_library[i] === usr2_library[j]){
+                        //checks to see if track was already added before adding    
+                        if(
+                            !matchingTracks.find(uri =>{
+                                if(uri === usr1_library[i]) return true;
+                                return false;
+                            })
+                        ) matchingTracks.push(usr1_library[i]);
+                    }
+                }
+            }   
+      </script>
+    </html>
